@@ -15,8 +15,7 @@ namespace ALE_GridExporter {
 
         public static readonly Logger Log = LogManager.GetCurrentClassLogger();
 
-        public static bool SaveGrid(string path, string filename, bool keepOriginalOwner, 
-                List<MyCubeGrid> grids, CommandContext context = null) {
+        public static bool SaveGrid(string path, string filename, bool keepOriginalOwner, List<MyCubeGrid> grids) {
 
             List<MyObjectBuilder_CubeGrid> objectBuilders = new List<MyObjectBuilder_CubeGrid>();
 
@@ -29,9 +28,9 @@ namespace ALE_GridExporter {
                 objectBuilders.Add(objectBuilder);
             }
 
-            MyObjectBuilder_PrefabDefinition definition = MyObjectBuilderSerializer.CreateNewObject<MyObjectBuilder_PrefabDefinition>();
+            MyObjectBuilder_ShipBlueprintDefinition definition = MyObjectBuilderSerializer.CreateNewObject<MyObjectBuilder_ShipBlueprintDefinition>();
 
-            definition.Id = new MyDefinitionId(new MyObjectBuilderType(typeof(MyObjectBuilder_PrefabDefinition)), filename);
+            definition.Id = new MyDefinitionId(new MyObjectBuilderType(typeof(MyObjectBuilder_ShipBlueprintDefinition)), filename);
             definition.CubeGrids = objectBuilders.Select(x => (MyObjectBuilder_CubeGrid)x.Clone()).ToArray();
 
             if (!keepOriginalOwner) {
@@ -46,7 +45,7 @@ namespace ALE_GridExporter {
             }
 
             MyObjectBuilder_Definitions builderDefinition = MyObjectBuilderSerializer.CreateNewObject<MyObjectBuilder_Definitions>();
-            builderDefinition.Prefabs = new MyObjectBuilder_PrefabDefinition[] { definition };
+            builderDefinition.ShipBlueprints = new MyObjectBuilder_ShipBlueprintDefinition[] { definition };
 
             return MyObjectBuilderSerializer.SerializeXML(path, false, builderDefinition);
         }
@@ -55,11 +54,11 @@ namespace ALE_GridExporter {
 
             if (MyObjectBuilderSerializer.DeserializeXML(path, out MyObjectBuilder_Definitions myObjectBuilder_Definitions)) {
 
-                var prefabs = myObjectBuilder_Definitions.Prefabs;
+                var shipBlueprints = myObjectBuilder_Definitions.ShipBlueprints;
 
-                if (prefabs == null) {
+                if (shipBlueprints == null) {
 
-                    Log.Warn("No Prefabs in File '" + path + "'");
+                    Log.Warn("No ShipBlueprints in File '" + path + "'");
 
                     if (context != null)
                         context.Respond("There arent any Grids in your file to import!");
@@ -67,11 +66,11 @@ namespace ALE_GridExporter {
                     return false;
                 }
                     
-                foreach(var prefab in prefabs) { 
+                foreach(var shipBlueprint in shipBlueprints) { 
 
-                    if(!LoadPrefab(prefab, playerPosition)) {
+                    if(!LoadShipBlueprint(shipBlueprint, playerPosition)) {
 
-                        Log.Warn("Error Loading Prefab from File '" + path + "'");
+                        Log.Warn("Error Loading ShipBlueprints from File '" + path + "'");
                         return false;
                     }
                 }
@@ -84,9 +83,9 @@ namespace ALE_GridExporter {
             return false;
         }
 
-        private static bool LoadPrefab(MyObjectBuilder_PrefabDefinition prefab, Vector3D playerPosition, CommandContext context = null) {
+        private static bool LoadShipBlueprint(MyObjectBuilder_ShipBlueprintDefinition shipBlueprint, Vector3D playerPosition, CommandContext context = null) {
 
-            var grids = prefab.CubeGrids;
+            var grids = shipBlueprint.CubeGrids;
 
             /* Where do we want to paste the grids? Lets find out. */
             var pos = FindPastePosition(grids, playerPosition);

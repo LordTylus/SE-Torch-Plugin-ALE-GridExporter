@@ -54,7 +54,7 @@ namespace ALE_GridExporter
             var folder = Path.Combine(StoragePath, Config.ExportedGridsPath);
             Directory.CreateDirectory(folder);
 
-            return Path.Combine(folder, fileName + ".xml");
+            return Path.Combine(folder, fileName + ".sbc");
         }
     }
 }

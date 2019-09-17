@@ -56,7 +56,7 @@ namespace ALE_GridExporter {
                 return;
             }
 
-            if (GridManager.SaveGrid(Plugin.CreatePath(filename), filename, Plugin.Config.KeepOriginalOwner, grids, Context))
+            if (GridManager.SaveGrid(Plugin.CreatePath(filename), filename, Plugin.Config.KeepOriginalOwner, grids))
                 Context.Respond("Export Complete!");
             else
                 Context.Respond("Export Failed!");
