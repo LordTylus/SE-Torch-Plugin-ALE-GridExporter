@@ -56,7 +56,8 @@ namespace ALE_GridExporter {
                 return;
             }
 
-            if (GridManager.SaveGrid(Plugin.CreatePath(filename), filename, Plugin.Config.KeepOriginalOwner, grids))
+            if (GridManager.SaveGrid(Plugin.CreatePath(filename), filename, 
+                    Plugin.Config.KeepOriginalOwner, Plugin.Config.ExportProjectorBlueprints, grids))
                 Context.Respond("Export Complete!");
             else
                 Context.Respond("Export Failed!");

@@ -15,7 +15,7 @@ namespace ALE_GridExporter {
 
         public static readonly Logger Log = LogManager.GetCurrentClassLogger();
 
-        public static bool SaveGrid(string path, string filename, bool keepOriginalOwner, List<MyCubeGrid> grids) {
+        public static bool SaveGrid(string path, string filename, bool keepOriginalOwner, bool keepProjection, List<MyCubeGrid> grids) {
 
             List<MyObjectBuilder_CubeGrid> objectBuilders = new List<MyObjectBuilder_CubeGrid>();
 
@@ -33,13 +33,20 @@ namespace ALE_GridExporter {
             definition.Id = new MyDefinitionId(new MyObjectBuilderType(typeof(MyObjectBuilder_ShipBlueprintDefinition)), filename);
             definition.CubeGrids = objectBuilders.Select(x => (MyObjectBuilder_CubeGrid)x.Clone()).ToArray();
 
-            if (!keepOriginalOwner) {
+            if (!keepOriginalOwner || !keepProjection) {
 
                 /* Reset ownership as it will be different on the new server anyway */
                 foreach (MyObjectBuilder_CubeGrid cubeGrid in definition.CubeGrids) {
                     foreach (MyObjectBuilder_CubeBlock cubeBlock in cubeGrid.CubeBlocks) {
-                        cubeBlock.Owner = 0L;
-                        cubeBlock.BuiltBy = 0L;
+
+                        if(!keepOriginalOwner) {
+                            cubeBlock.Owner = 0L;
+                            cubeBlock.BuiltBy = 0L;
+                        }
+
+                        if(!keepProjection) 
+                            if (cubeBlock is MyObjectBuilder_ProjectorBase projector)
+                                projector.ProjectedGrids.Clear();
                     }
                 }
             }
