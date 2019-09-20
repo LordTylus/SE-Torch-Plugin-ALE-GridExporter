@@ -46,7 +46,7 @@ namespace ALE_GridExporter {
 
                         if(!keepProjection) 
                             if (cubeBlock is MyObjectBuilder_ProjectorBase projector)
-                                projector.ProjectedGrids.Clear();
+                                projector.ProjectedGrids = null;
                     }
                 }
             }
