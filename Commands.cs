@@ -1,16 +1,12 @@
-﻿using NLog;
+﻿using ALE_Core;
+using ALE_Core.Utils;
+using NLog;
 using Sandbox.Game.Entities;
 using Sandbox.Game.Entities.Character;
 using Sandbox.Game.World;
-using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Torch.Commands;
 using Torch.Commands.Permissions;
-using Torch.Mod;
-using Torch.Mod.Messages;
 using VRage.Game.ModAPI;
 
 namespace ALE_GridExporter {
@@ -95,7 +91,7 @@ namespace ALE_GridExporter {
 
             var playerPosition = player.Character.PositionComp.GetPosition();
 
-            if(GridManager.LoadGrid(Plugin.CreatePath(filename), playerPosition, Context))
+            if(GridManager.LoadGrid(Plugin.CreatePath(filename), playerPosition, false, false, Context))
                 Context.Respond("Import Complete!");
             else
                 Context.Respond("Import Failed!");
