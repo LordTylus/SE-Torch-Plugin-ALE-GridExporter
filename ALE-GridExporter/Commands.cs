@@ -1,4 +1,4 @@
-﻿using ALE_Core;
+﻿using ALE_Core.GridExport;
 using ALE_Core.Utils;
 using NLog;
 using Sandbox.Game.Entities;
@@ -72,13 +72,13 @@ namespace ALE_GridExporter {
                     return;
                 }
 
-                player = ((MyPlayer) Context.Player).Identity;
+                player = ((MyPlayer)Context.Player).Identity;
 
             } else {
 
                 player = PlayerUtils.GetIdentityByName(playerName);
 
-                if(player == null) {
+                if (player == null) {
                     Context.Respond("Player not Found!");
                     return;
                 }
@@ -90,11 +90,17 @@ namespace ALE_GridExporter {
             }
 
             var playerPosition = player.Character.PositionComp.GetPosition();
+            var result = GridManager.LoadGrid(Plugin.CreatePath(filename), playerPosition, false, false);
 
-            if(GridManager.LoadGrid(Plugin.CreatePath(filename), playerPosition, false, false, Context))
+            if (result == GridImportResult.OK) {
+
                 Context.Respond("Import Complete!");
-            else
+
+            } else {
+
+                GridImportResultWriter.WriteResult(Context, result);
                 Context.Respond("Import Failed!");
+            }
         }
     }
 }
