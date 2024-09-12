@@ -44,8 +44,8 @@
         <TextBlock Grid.Column="0" Grid.Row ="6" VerticalAlignment="Center" Text="!exportgrid &lt;filename> [gridname]" Margin="5" />
         <TextBlock Grid.Column="1" Grid.Row ="6" VerticalAlignment="Center" Grid.ColumnSpan="2" TextWrapping="Wrap" Text="Exports the grid you are looking at or with given name to the Server." Margin="5"/>
 
-        <TextBlock Grid.Column="0" Grid.Row ="7" VerticalAlignment="Center" Text="!importgrid &lt;filename> [playername]" Margin="5" />
-        <TextBlock Grid.Column="1" Grid.Row ="7" VerticalAlignment="Center" Grid.ColumnSpan="2" TextWrapping="Wrap" Text="Imports the grids in the given file and optionally spawns it near an other player." Margin="5"/>
+        <TextBlock Grid.Column="0" Grid.Row ="7" VerticalAlignment="Center" Text="!importgrid &lt;filename> [playername]&#x0a;[Keep original location (true/false)] [Force paste (true/false)]" Margin="5" />
+        <TextBlock Grid.Column="1" Grid.Row ="7" VerticalAlignment="Center" Grid.ColumnSpan="2" TextWrapping="Wrap" Text="Imports the grids in the given file and optionally spawns it near an other player. If Keep original Location is set, playername is ignored, but must be provided." Margin="5"/>
 
         <Button Grid.Column="2" Grid.Row="5" Content="Save Config" Margin="5" Click="SaveButton_OnClick"></Button>
         
