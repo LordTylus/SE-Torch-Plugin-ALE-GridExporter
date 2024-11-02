@@ -1,4 +1,5 @@
-﻿using NLog;
+﻿using ALE_Core.Utils;
+using NLog;
 using System;
 using System.IO;
 using System.Windows.Controls;
@@ -49,6 +50,8 @@ namespace ALE_GridExporter
 
             var folder = Path.Combine(StoragePath, Config.ExportedGridsPath);
             Directory.CreateDirectory(folder);
+
+            fileName = FileUtils.ToValidatedInput(fileName);
 
             return Path.Combine(folder, fileName + ".sbc");
         }
